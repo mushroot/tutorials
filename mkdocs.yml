@@ -2,27 +2,27 @@ docs_dir: doc/book
 site_dir: doc/html
 pages:
     - index.md
-    - "MVC Tutorials":
-      - "Getting Started with Zend Framework":
-          - Overview: getting-started/overview.md
-          - "The Skeleton Application": getting-started/skeleton-application.md
-          - Modules: getting-started/modules.md
-          - "Routing and Controllers": getting-started/routing-and-controllers.md
-          - "Database and Models": getting-started/database-and-models.md
-          - "Forms and Actions": getting-started/forms-and-actions.md
-          - Conclusion: getting-started/conclusion.md
-      - "Unit Testing A zend-mvc Application": unit-testing.md
-      - "Adding zend-navigation to the Album Module": navigation.md
-      - "Adding zend-paginator to the Album Module": pagination.md
-      - "In-Depth Tutorial":
-          - "Introducing the Blog Module": in-depth-guide/first-module.md
-          - "Models and the ServiceManager": in-depth-guide/models-and-servicemanager.md
-          - "Preparing for Different Databases": in-depth-guide/preparing-databases.md
-          - "SQL Abstraction and Object Hydration": in-depth-guide/zend-db-sql-zend-hydrator.md
+    - "MVC 教程":
+      - "Zend Framework 入门":
+          - 概述: getting-started/overview.md
+          - 骨架应用: getting-started/skeleton-application.md
+          - 模块: getting-started/modules.md
+          - 路由和控制器: getting-started/routing-and-controllers.md
+          - 数据库及模型: getting-started/database-and-models.md
+          - 表单和操作: getting-started/forms-and-actions.md
+          - 结论: getting-started/conclusion.md
+      - "为 zend-mvc 应用使用单元测试": unit-testing.md
+      - "添加 zend-navigation 到专辑模块": navigation.md
+      - "添加 zend-paginator 到专辑模块": pagination.md
+      - "深入教程":
+          - "介绍博客模块": in-depth-guide/first-module.md
+          - "模块和服务管理器": in-depth-guide/models-and-servicemanager.md
+          - "不同数据库的方案": in-depth-guide/preparing-databases.md
+          - "SQL 抽象和对象 Hydration": in-depth-guide/zend-db-sql-zend-hydrator.md
           - "Understanding the Router": in-depth-guide/understanding-routing.md
           - "Making Use of Forms and Fieldsets": in-depth-guide/zend-form-zend-form-fieldset.md
-          - "Editing and Deleting Data": in-depth-guide/data-binding.md
-          - "Reviewing the Blog Module": in-depth-guide/review.md
+          - "添加或删除数据": in-depth-guide/data-binding.md
+          - "复审博客模块": in-depth-guide/review.md
       - "Advanced Configuration": advanced-config.md
       - Internationalization: i18n.md
     - "Component Tutorials":
@@ -33,7 +33,7 @@ pages:
             - Overview: migration/to-v3/overview.md
             - Components: migration/to-v3/components.md
             - Applications: migration/to-v3/application.md
-site_name: tutorials
+site_name: 快速入门
 site_description: "Zend Framework Tutorials"
 repo_url: 'https://github.com/zendframework/tutorials'
 copyright: 'Copyright (c) 2016 <a href="http://www.zend.com/">Zend Technologies USA Inc.</a>'
