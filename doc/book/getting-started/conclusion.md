@@ -1,28 +1,28 @@
-# Conclusion
+# 结论
 
-This concludes our brief look at building a simple, but fully functional,
-Zend Framework zend-mvc application.
+这里我们构建了一个简单但是功能比较齐全的 Zend Framework zend-mvc 应用。
 
-In this tutorial we but briefly touched quite a number of different parts of the
-framework.
+在这个教程中我们简单的接触了框架的几个不同的部分。
 
-The most important part of applications built with zend-mvc are the
-[modules](https://zendframework.github.io/zend-modulemanager/intro/), the
-building blocks of any [zend-mvc application](https://zendframework.github.io/zend-mvc/quick-start/).
+建立 zend-mvc 应用最重要的部分就是
+[modules](https://zendframework.github.io/zend-modulemanager/intro/), 
+作为构建 [zend-mvc application](https://zendframework.github.io/zend-mvc/quick-start/).
+的基础部件。
 
-To ease the work with dependencies inside our applications, we use the
+为了配合我们应用不同部件之间的依赖关系，我们需要只用
 [service manager](https://zendframework.github.io/zend-servicemanager/intro/).
 
-To be able to map a request to controllers and their actions, we use
+为了能够映射请求的路由到控制器中的操作上，我们需要使用
 [routes](https://zendframework.github.io/zend-router/routing/).
 
-Data persistence was performed using
-[zend-db](https://zendframework.github.io/zend-db/adapter/) to communicate with
-a relational database. Input data is filtered and validated with [input
-filters](https://zendframework.github.io/zend-inputfilter/intro/),
-and, together with [zend-form](https://zendframework.github.io/zend-form/intro/),
-they provide a strong bridge between the domain model and the view layer.
+数据持久化使用
+[zend-db](https://zendframework.github.io/zend-db/adapter/) 和数据库进行通讯.
+使用 [input
+filters](https://zendframework.github.io/zend-inputfilter/intro/) 对输入的数据
+进行验证，并且配合 [zend-form](https://zendframework.github.io/zend-form/intro/),
+在视图模型以及域模型之间架起稳健的桥梁。
 
-[zend-view](https://zendframework.github.io/zend-view/quick-start/) is
-responsible for the View in the MVC stack, together with a vast amount of
-[view helpers](https://zendframework.github.io/zend-view/helpers/intro/).
+[zend-view](https://zendframework.github.io/zend-view/quick-start/) 
+是负责在 MVC 栈中处理视图，并且提供了相当多的
+[view helpers](https://zendframework.github.io/zend-view/helpers/intro/)
+可供使用

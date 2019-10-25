@@ -1,80 +1,71 @@
-# Getting started: A skeleton application
+# 从skeleton application开始
 
-In order to build our application, we will start with the
+为了创建我们的应用, 我们将利用托管在 [github](https://github.com/) 的
 [ZendSkeletonApplication](https://github.com/zendframework/ZendSkeletonApplication)
-available on [github](https://github.com/). Use [Composer](<http://getcomposer.org>)
-to create a new project from scratch:
+. 使用 [Composer](<http://getcomposer.org>)
+从头开始创建一个新应用:
 
 ```bash
 $ composer create-project -s dev zendframework/skeleton-application path/to/install
 ```
 
-This will install an initial set of dependencies, including:
+这将安装一组初始化依赖环境，包括：
 
-- zend-component-installer, which helps automate injection of component
-  configuration into your application.
-- zend-mvc, the kernel for MVC applications.
+- zend-component-installer, 帮助自动化组件配置的注入到应用程序中.
+- zend-mvc,  MVC应用内核。
 
-The default is to provide the minimum amount of dependencies necessary to run a
-zend-mvc application. However, you may have additional needs that you know at
-the outset, and, as such, the skeleton also ships with an installer plugin that
-will prompt you for a number of items.
+默认提供一个运行zend-mvc应用所需的最小依赖环境。然而，您可能一开始就有额外的需求，所以，
+框架还提供一个安装插件以便安装多个项目。
 
-First, it will prompt:
+首先，他会提示：
 
 ```text
     Do you want a minimal install (no optional packages)? Y/n
 ```
 
-> ### Prompts and default values
+> ### 提示和默认值
 >
-> All prompts emitted by the installer provide the list of options available,
-> and will specify the default option via a capital letter. Default values are
-> used if the user presses "Enter" with no value. In the previous example, "Y"
-> is the default.
+> 安装程序发出的所有可选项的提示。并且将提供一个首字母大写的默认项。默认项在空值时
+> 按下 "Enter" 触发。在之前的例子中，"Y" 为默认值。
 
-If you answer "Y", or press enter with no selection, the installer will not
-raise any additional prompts, and finish installing your application. If you
-answer "n", it will continue prompting you:
+如果您的答案为 "Y", 或者直接按下回车，安装程序将在不列出任何附加提示的情况下完成安装。
+如果您的答案是 "n", 它将继续提示您：
 
 ```text
     Would you like to install the developer toolbar? y/N
 ```
 
-The [developer toolbar](https://github.com/zendframework/ZendDeveloperTools)
-provides an in-browser toolbar with timing and profiling information, and can be
-useful when debugging an application. For the purposes of the tutorial, however,
-we will not be using it; hit either "Enter", or "n" followed by "Enter".
+[开发工具条](https://github.com/zendframework/ZendDeveloperTools)
+提供一个在浏览器工具栏定时的分析信息，可以在应用中调试时使用。鉴于本教程的目的，我们暂时
+都不会去使用这个工具；选择是否安装都行。
 
 ```text
     Would you like to install caching support? y/N
 ```
 
-We will not be demonstrating caching in this tutorial, so either hit "Enter", or
-"n" followed by "Enter".
+我们将不会再例子中使用缓存，所以，是否安装都行。
 
 ```text
     Would you like to install database support (installs zend-db)? y/N
 ```
 
-We *will* be using zend-db extensively in this tutorial, so hit "y" followed by
-"Enter". You should see the following text appear:
+我们*将会*在教程中使用zend-db扩展，所以，需要输入"y"并回车。您将会看见出现下面的文字：
 
 ```text
     Will install zendframework/zend-db (^2.8.1)
     When prompted to install as a module, select application.config.php or modules.config.php
 ```
 
-The next prompt is:
+下一个提示是:
 
 ```text
     Would you like to install forms support (installs zend-form)? y/N
 ```
 
-This tutorial also uses zend-form, so we will again select "y" to install this;
-doing so emits a similar message to that used for zend-db.
+当前教程同样也会使用zend-form，所以我们需要再次输入"y"安装当前扩展；
+同样也会出现提示信息。
 
-At this point, we can answer "n" to the remaining features:
+这时，我们可以选择不安装其余剩下的功能：
 
 ```text
     Would you like to install JSON de/serialization support? y/N
@@ -88,7 +79,7 @@ At this point, we can answer "n" to the remaining features:
     Would you like to install the zend-di integration for zend-servicemanager? y/N
 ```
 
-At a certain point, you'll see the following text:
+另外，您将会看见下面的提示：
 
 ```text
 Updating root package
@@ -104,148 +95,117 @@ Updating application configuration...
   Make your selection (default is 0):
 ```
 
-We want to enable the various selections we made in the application. As such,
-we'll choose `1`, which will then give us the following prompt:
+我们希望在应用中随时调用，所以，我们选择 `1`，这将会给我们一个如下的提示：
 
 ```text
   Remember this option for other packages of the same type? (y/N)
 ```
 
-In our case, we can safely say "y", which will mean we will no longer be
-prompted for additional packages. (The only package in the default set of
+这时，我们可以放心的选择 "y"，这将意味着我们不会收到附加安装包的确认提示了。
+(The only package in the default set of
 prompts that you may not want to enable by default is `Zend\Test`.)
 
-Once the installation is done, the skeleton installer removes itself, and the
-new application is ready to start!
+一旦安装完成，这个骨架安装包将会被移除，我们就可以开始创建一个新的应用了!
 
-> ### Downloading the skeleton
->
-> Another way to install the ZendSkeletonApplication is to use github to
-> download a compressed archive. Go to
-> https://github.com/zendframework/ZendSkeletonApplication, click the "Clone or
-> download" button, and select "Download ZIP". This will download a file with a
-> name like `ZendSkeletonApplication-master.zip` or similar.
->
-> Unzip this file into the directory where you keep all your vhosts and rename
-> the resultant directory to `zf-tutorial`.
->
-> ZendSkeletonApplication is set up to use [Composer](http://getcomposer.org)
-> to resolve its dependencies. Run the following from within your new
-> zf-tutorial folder to install them:
->
-> ```bash
-> $ composer self-update
-> $ composer install
-> ```
->
-> This takes a while. You should see output like the following:
->
-> ```text
-> Installing dependencies from lock file
-> - Installing zendframework/zend-component-installer (0.2.0)
->   
-> ...
->
-> Generating autoload files
-> ```
->
-> At this point, you will be prompted to answer questions as noted above.
->
-> Alternately, if you do not have Composer installed, but *do* have either
-> Vagrant or docker-compose available, you can run Composer via those:
->
-> ```bash
-> # For Vagrant:
-> $ vagrant up
-> $ vagrant ssh -c 'composer install'
-> # For docker-compose:
-> $ docker-compose build
-> $ docker-compose run zf composer install
-> ```
-
-> ### Timeouts
->
-> If you see this message:
->
-> ```text
-> [RuntimeException]      
->   The process timed out.
-> ```
->
-> then your connection was too slow to download the entire package in time, and
-> composer timed out. To avoid this, instead of running:
->
-> ```bash
-> $ composer install
-> ```
->
-> run instead:
->
-> ```bash
-> $ COMPOSER_PROCESS_TIMEOUT=5000 composer install
-> ```
-
-> ### Windows users using WAMP
->
-> For windows users with wamp:
->
-> 1. Install [composer for windows](https://getcomposer.org/doc/00-intro.md#installation-windows).
->    Check composer is properly installed by running:
->
->    ```bash
->    $ composer
->    ```
->
-> 2. Install [GitHub Desktop](https://desktop.github.com/) for windows.
-     Check git is properly installed by running:
->
->    ```bash
->    $ git
->    ```
->
-> 3. Now install the skeleton using:
->
->    ```bash
->    $ composer create-project -s dev zendframework/skeleton-application path/to/install
->    ```
-
-We can now move on to the web server setup.
-
-## Web Servers
-
-In this tutorial, we will step you through four different ways to setup your web
-server:
-
-- Via the PHP built-in web server.
-- Via Vagrant.
-- Via docker-compose.
-- Using Apache.
-
-### Using the Built-in PHP web Server
-
-You can use PHP's built-in web server when developing your application. To do
-this, start the server from the project's root directory:
-
+### 直接下载 skeleton
+另外一种安装方式就是直接去 github 下载 ZendSkeletonApplication 压缩包。
+进入 https://github.com/zendframework/ZendSkeletonApplication，点击 
+"Clone or download" 按钮，选择 "Download ZIP"。 这将下载一个名称为
+ZendSkeletonApplication-master.zip 的文件。
+解压当前文件到vhosts对应的目录中，并且重命名为 `zf2-tutorial`。
+ZendSkeletonApplication 使用 [Composer](http://getcomposer.org) 安装
+依赖。 在 zf2-tutorial 目录中运行如下的代码安装：
 ```bash
-$ php -S 0.0.0.0:8080 -t public public/index.php
+$ composer self-update
+$ composer install
 ```
 
-This will make the website available on port 8080 on all network interfaces,
-using `public/index.php` to handle routing. This means the site is accessible
-via `http://localhost:8080` or `http://<your-local-IP>:8080`.
+不久您将会看见下面的提示：
+```text
+Installing dependencies from lock file
+- Installing zendframework/zend-component-installer (0.2.0)
+  
+...
+Generating autoload files
+```
 
-If you’ve done it right, you should see the following.
+这时，您就可以安装上面个的教程来进行安装了。
+Alternately, if you do not have Composer installed, but *do* have either
+Vagrant or docker-compose available, you can run Composer via those:
+```bash
+# For Vagrant:
+$ vagrant up
+$ vagrant ssh -c 'composer install'
+# For docker-compose:
+$ docker-compose build
+$ docker-compose run zf composer install
+```
+
+### 超时
+如果您看见下面的提示信息:
+```text
+[RuntimeException]      
+  The process timed out. 
+```
+那么代表的您的网速过慢，无法下载composer。解决的办法是将下面的代码：
+```bash
+$ composer install
+```
+替换成:
+```bash
+$ COMPOSER_PROCESS_TIMEOUT=5000 composer install
+```
+
+### 使用 wamp 的 Windows 用户
+使用 wamp 的 Windows 用户:
+1. 安装 [composer for windows](https://getcomposer.org/doc/00-intro.md#installation-windows).
+   通过运行下面的代码检测是否安装成功:
+   ```bash
+   $ composer
+   ```
+2. 安装windows版本的 [GitHub Desktop](https://desktop.github.com/) .
+     运行来检查git是否安装成功:
+   ```bash
+   $ git
+   ```
+3. 使用如下代码安装:
+   ```bash
+   $ composer create-project -s dev zendframework/skeleton-application path/to/install
+   ```
+
+现在我们可以开始web服务器的配置了。
+
+## Web 服务器
+
+在当前教程中，我们将使用几种不同的方式去安装web服务器：
+
+- PHP 内置的 web服务器.
+- Via Vagrant.
+- Via docker-compose.
+- 使用 Apache.
+
+### 使用 PHP 内置的 web 服务器
+
+当您在开发应用的过程中您可以使用PHP内置的Web服务器。安装如下的方式在项目根目录运行：
+
+```bash
+$ php -S 0.0.0.0:8080 -t public/ public/index.php
+```
+将使用 `public/index.php` 监听端口为8080的路由。这将意味着我们可以使用
+ `http://localhost:8080` 或者 `http://<your-local-IP>:8080` 来访问
+
+如果您配置正确，您将会看见下面的信息。
 
 ![zend-mvc Hello World](../images/user-guide.skeleton-application.hello-world.png)
 
-To test that your routing is working, navigate to `http://localhost:8080/1234`,
-and you should see the following 404 page:
+为了测试路由是否正常工作，您可以访问 `http://localhost:8080/1234`, 如果配置正确您
+将会看见如下的 404 页面：
 
 ![zend-mvc 404 page](../images/user-guide.skeleton-application.404.png)
 
-> #### Development only
+> #### 仅供开发使用
 >
-> PHP's built-in web server should be used **for development only**.
+> PHP 内置的 web 服务器  **仅供开发的时候使用**.
 
 ### Using Vagrant
 
@@ -313,33 +273,28 @@ $ docker-compose run zf composer update
 The configuration includes both PHP 7.0 and Apache 2.4, and maps the host port
 8080 to port 80 of the container.
 
-### Using the Apache Web Server
+### 使用 Apache Web Server
 
-We will not cover installing [Apache](https://httpd.apache.org), and will assume
-you already have it installed. We recommend installing Apache 2.4, and will only
-cover configuration for that version.
+我们假定您已经安装了 2.4版本的[Apache](https://httpd.apache.org)， 并且将不介绍如果去安装Apache。并且只提供当前本版
+本的配置信息。
 
-You now need to create an Apache virtual host for the application and edit your
-hosts file so that `http://zf-tutorial.localhost` will serve `index.php` from
-the `zf-tutorial/public/` directory.
+您需要为您的应用创建一个Apache virtual host，使得主机 `http://zf2-tutorial.localhost` 
+将会指定到 `zf2-tutorial/public/` 目录的 `index.php`。
 
-Setting up the virtual host is usually done within `httpd.conf` or
-`extra/httpd-vhosts.conf`. If you are using `httpd-vhosts.conf`, ensure that
-this file is included by your main `httpd.conf` file. Some Linux distributions
-(ex: Ubuntu) package Apache so that configuration files are stored in
-`/etc/apache2` and create one file per virtual host inside folder
-`/etc/apache2/sites-enabled`. In this case, you would place the virtual host
-block below into the file `/etc/apache2/sites-enabled/zf-tutorial`.
+在 `httpd.conf` 或者 `extra/httpd-vhosts.conf`中设置虚拟主机。如果您使用的是 
+`httpd-vhosts.conf` 请确保  `httpd.conf` 中引入了当前文件。一些Linux发行版
+(例如: Ubuntu) Apahce配置文件位于 `/etc/apache2`，并且在 `/etc/apache2/sites-enabled` 
+目录下创建一个虚拟主机文件。在这个例子中我们将创建一个 `/etc/apache2/sites-enabled/zf2-tutorial`
+文件。
 
-Ensure that `NameVirtualHost` is defined and set to `*:80` or similar, and then
-define a virtual host along these lines:
+确保定义了 `NameVirtualHost` 并且监听了 `*:80` 或者类似的端口，接下来定义一个如下行的虚拟主机：
 
 ```apache
 <VirtualHost *:80>
-    ServerName zf-tutorial.localhost
-    DocumentRoot /path/to/zf-tutorial/public
+    ServerName zf2-tutorial.localhost
+    DocumentRoot /path/to/zf2-tutorial/public
     SetEnv APPLICATION_ENV "development"
-    <Directory /path/to/zf-tutorial/public>
+    <Directory /path/to/zf2-tutorial/public>
         DirectoryIndex index.php
         AllowOverride All
         Require all granted
@@ -347,47 +302,42 @@ define a virtual host along these lines:
 </VirtualHost>
 ```
 
-Make sure that you update your `/etc/hosts` or
-`c:\windows\system32\drivers\etc\hosts` file so that `zf-tutorial.localhost` is
-mapped to `127.0.0.1`. The website can then be accessed using
-`http://zf-tutorial.localhost`.
+确保您的 `/etc/hosts` 或者 `c:\windows\system32\drivers\etc\hosts` 文件如 `zf2-tutorial.localhost` 
+中定义的指向`127.0.0.1`。使用 `http://zf2-tutorial.localhost` 访问当前网站。
 
 ```none
-127.0.0.1 zf-tutorial.localhost localhost
+127.0.0.1 zf2-tutorial.localhost localhost
 ```
 
-Restart Apache.
+重启 Apache.
 
-If you've done so correctly, you will get the same results as covered under
-[the PHP built-in web server](#using-the-built-in-php-web-server).
+如果您配置成功，您将会看见和 [the PHP built-in web server](#using-the-built-in-php-web-server) 
+中同样的结果。
 
-To test that your `.htaccess` file is working, navigate to
-`http://zf-tutorial.localhost/1234`, and you should see the 404 page as noted
-earlier.  If you see a standard Apache 404 error, then you need to fix your
-`.htaccess` usage before continuing.
+测试 `.htaccess` 是否工作，进入`http://zf2-tutorial.localhost/1234`， 您将会看见
+一个如前的404页面。如果您看见的是Apache的404错误页面，您就需要检查您的 `.htaccess` 
+文件，在继续下面的步骤。
 
-If you're are using IIS with the URL Rewrite Module, import the following:
+如果你使用的是IIS的URL重写模块，需要导入如下信息:
 
 ```apache
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ index.php [NC,L]
 ```
 
-You now have a working skeleton application and we can start adding the specifics for our application.
+现在我们已经拥有了一个应用骨架，可以开始构建我们的应用了。
 
-## Error reporting
+## 错误报告
 
-Optionally, *when using Apache*, you can use the `APPLICATION_ENV` setting in
-your `VirtualHost` to let PHP output all its errors to the browser. This can be
-useful during the development of your application.
+通常, *使用 Apache 的时候*, 我们可以在 `VirtualHost` 中使用 `APPLICATION_ENV` 来设置
+在浏览器中显示错误。这在我们开发应用的过程中是非常有用的。
 
-Edit `zf-tutorial/public/index.php` directory and change it to the following:
+编辑 `zf2-tutorial/public/index.php` 做如下修改:
 
 ```php
 <?php
 
 use Zend\Mvc\Application;
-use Zend\Stdlib\ArrayUtils;
 
 /**
  * Display all errors when APPLICATION_ENV is development.
@@ -434,47 +384,36 @@ if (file_exists(__DIR__ . '/../config/development.config.php')) {
 Application::init($appConfig)->run();
 ```
 
-## Development mode
+## 开发模式
 
-Before we begin, we're going to enable *development mode* for the application.
-The skeleton application provides two files that allow us to specify general
-development settings we want to use everywhere; these may include enabling
-modules for debugging, or enabling error display in our view scripts. These
-files are located at:
+在我们开始之前，我们需要在应用中开启 *开发模式*。这个骨架应用提供两个文件，允许我们
+在任何时候指定开发模式；其中包括启用调试或者允许在视图中显示错误，这些文件位于：
 
 - `config/development.config.php.dist`
 - `config/autoload/development.local.php.dist`
 
-When we enable development mode, these files are copied to:
+接下来我们启用开发模式，复制文件如下：
 
 - `config/development.config.php`
 - `config/autoload/development.local.php`
 
-This allows them to be merged into our application. When we disable development
-mode, these two files that were created are then removed, leaving only the
-`.dist` versions. (The repository also contains rules to ignore the copies.)
+这将允许他们合并到我们的应用中，当我们需要移除开发模式的时候，直接删除当前文件，保留
+`.dist` 版本就行。 (The repository also contains rules to ignore the copies.)
 
-Let's enable development mode now:
+开启开发模式：
 
 ```bash
 $ composer development-enable
 ```
 
-> ### Never enable development mode in production
->
-> You should never enable development mode in production, as the typical
-> reason to enable it is to enable debugging! As noted, the artifacts generated
-> by enabling development mode cannot be committed to your repository, so
-> assuming you don't run the command in production, you should be safe.
->
-> You can test the status of development mode using:
->
-> ```bash
-> $ composer development-status
-> ```
->
-> And you can disable it using:
->
-> ```bash
-> $ composer development-disable
-> ```
+### 千万不要在生产环境中使用开发模式
+不要在生产环境中启用开发模式，特别是这将启用调试模式！如前所述，启用开发模式将会暴露
+您的资料库，所以为了应用的安全，确保您没有在生产环境中运行。
+您可以使用如下命令检查您的环境:
+```bash
+$ composer development-status
+```
+禁用环境:
+```bash
+$ composer development-disable
+```

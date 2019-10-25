@@ -1,55 +1,43 @@
+# 复审博客模块
 # Reviewing the Blog Module
 
-Throughout the tutorial, we have created a fully functional CRUD module
-using a blog as an example. While doing so, we've made use of several different
-design patterns and best-practices. Now it's time to reiterate and take a look
-at some of the code samples we've written. This is going to be done in a Q&A
-fashion.
+通过当前教程，我们创建了一个具有完整增删改查功能的示例博客。
+同时我们尝试了几种不同的设计模式和最佳实践方案。
+现在是时候重新审查我们编写的示例代码了。我们将通过如下几个问答来完成。
 
 ## Do we always need all the layers and interfaces?
 
-Short answer: no.
+答案当然是：no。
 
-Long answer: The importance of interfaces increases the bigger your application
-becomes. If you can foresee that your application will be used by other people
-or should be extendable, then you should strongly consider creating interfaces
-and coding to them.  This is a very common best-practice that is not tied to
-Zend Framework specifically, but rather more general object oriented
-programming.
+接口的重要性在于增加了你应用的健壮性。如果你觉得你的应用在将来会被他人使用或用来增加扩展，
+那么就强烈建议你使用并编写接口。这不仅仅是对 Zend Framework 来说是最唱见的最佳实践，
+同时对于别的面向对象变成也是如此。
 
-The main role of the multiple layers that we have introduced are to provide a
-strict separation of concerns for our application.
 
-It is tempting to include your database access directly in your controllers. We
-recommend splitting it out to other objects, and providing interfaces for the
-interactions whenever you can. Doing so helps decouple your controllers from the
-implementation, allowing you to swap out the implementation later without
-changing the controllers. Using interfaces also simplifies testing, as you can
-provide mock implementations easily.
+使用多层开发的主要目的是为我们的应用提供了一种低耦合的结构。
 
-## Why are there so many controllers?
 
-With the exception of our `ListController`, we created a controller for each
-route we added.
+直接在控制器中访问数据库是一种简单粗暴的方式。我们推荐将其放到别的对象中并尽可能的接口。
+这样做可以将控制器从具体的实现中解耦，允许你在之后实施变更的时候无需更改控制器。
+使用接口同样还可以简化测试，可以比较容易的建立模拟环境。
 
-We could have combined these into a single controller. In practice, we have
-observed the following when doing so:
 
-- Controllers grow in complexity, making maintenance and additions more
-  difficult.
-- The number of dependencies grows with the number of responsibilities. Many
-  actions may need only a subset of the dependencies, leading to needless
-  performance and resource overhead.
-- Testing becomes more difficult.
-- Re-use becomes more difficult.
+## 为什么需要如此多的控制器？
 
-The primary problem is that such controllers quickly break the
-[Single Responsibility Principle](https://en.wikipedia.org/wiki/Single_responsibility_principle),
-and inherit all the problems that principle attempts to combat.
+除开`ListController`，我们还为每个路由都创建了对应的控制器。
 
-We recommend a single action per controller whenever possible.
+我们同样可以将其合并到一个控制器中。在实际的实施中，我们发现有如下几个问题：
 
-## Do you have more questions? PR them!
+- 控制器的复杂度不断上升时，维护和新增功能变得愈加困难。
+- 随着业务数不断增加，依赖也在不断增加。许多的操作可能只需要极少的依赖，从而导致了一些不必要的性能开销。
+- 测试变得更加困难。
+- 重用也将变得更加困难。
 
-If there's anything you feel that's missing in this FAQ, please create an issue
-or send a pull request with your question!
+主要的问题就是控制器违背了
+[单一责任原则Single Responsibility Principle](https://en.wikipedia.org/wiki/Single_responsibility_principle),
+尝试去解决所有问题。
+
+
+我们推荐无论何种情况都在控制器中只添加一个操作。
+
+## 如果还有其他问题请直接提交PR！

@@ -1,34 +1,24 @@
-# Editing and Deleting Data
+# 编辑以及删除数据
 
-In the previous chapter we've come to learn how we can use the zend-form and
-zend-db components for *creating* new data-sets. This chapter will focus on
-finalizing the CRUD functionality by introducing the concepts for *editing* and
-*deleting* data.
+在之前的文档中我们学习了如何使用 zend-form 和 zend-db 组件来 *创建* 一个新的数据集。这篇文档将通过介绍 *编辑* 和 *删除* 数据来完善CURD功能。
 
-## Binding Objects to Forms
+## 将对象绑定到表单上
 
-The one fundamental difference between our "add post" and "edit post" forms is
-the existence of data.  This means we need to find a way to get data from our
-repository into the form. Luckily, zend-form provides this via a
-**data-binding** feature.
+“新增内容”和“编辑内容”唯一的区别就在于表单中存在的数据不一样。这将意味着我们可以将数据库中获取到的数据直接填充到表单上。幸运的是，zend-form 提供了一个 **data-binding** 的功能。
 
-In order to use this feature, you will need to retrieve a `Post` instance, and
-bind it to the form. To do this, we will need to:
+为了使用这个功能，你需要将一个`Post`实例并将其绑定到表单上。实现方式如下：
+- 在`WriteController`中新增依赖`PostRepositoryInterface`以检索我们的`Post`。
+- 在`WriteController`中添加一个`editAction`方法，用来将检索到的`Post`绑定到表单，并且展示或进行处理。
+- 在`WriteControllerFactory`中注入`PostRepositoryInterface`。
 
-- Add a dependency in our `WriteController` on our `PostRepositoryInterface`,
-  from which we will retrieve our `Post`.
-- Add a new method to our `WriteController`, `editAction()`, that will retrieve
-  a `Post`, bind it to the form, and either display the form or process it.
-- Update our `WriteControllerFactory` to inject the `PostRepositoryInterface`.
+开始更新`WriteController`:
 
-We'll begin by updating the `WriteController`:
+- 引入`PostRepositoryInterface`。
+- 添加一个变量来保存`PostRepositoryInterface`。
+- 在构造函数中添加 `PostRepositoryInterface`。
+- 添加 `editAction`函数实例。
 
-- We will import the `PostRepositoryInterface`.
-- We will add a property for storing the `PostRepositoryInterface`.
-- We will update the constructor to accept the `PostRepositoryInterface`.
-- We will add the `editAction()` implementation.
-
-The final result will look like the following:
+最终效果将如下所示：
 
 ```php
 <?php
@@ -143,21 +133,18 @@ class WriteController extends AbstractActionController
 }
 ```
 
-The primary differences between `addAction()` and `editAction()` are that the
-latter needs to first fetch a `Post`, and this post is *bound* to the form. By
-binding it, we ensure that the data is populated in the form for the initial
-display, and, once validated, the same instance is updated. This means that we
-can omit the call to `getData()` after validating the form.
+`addAction` 和 `editAction` 最主要的不同点在于后者需要先获取一个`Post`，并将其*绑定*到表单上。
+通过这种绑定的方式，确保数据填充并初始化表单以用来展示数据，一单数据发生变更，实例也讲同步更新。
+这将意味着我们在对表单进行验证后不必再去调用`getData`方法。
 
-Now we need to update our `WriteControllerFactory`. First, add a new import
-statement to it:
+现在需要更新`WriteControllerFactory`。添加一个如下的引用：
 
 ```php
 // In module/Blog/src/Factory/WriteControllerFactory.php:
 use Blog\Model\PostRepositoryInterface;
 ```
 
-Next, update the body of the factory to read as follows:
+接下来更新工厂类的内容如下：
 
 ```php
 // In module/Blog/src/Factory/WriteControllerFactory.php:
@@ -173,18 +160,16 @@ public function __invoke(ContainerInterface $container, $requestedName, array $o
 }
 ```
 
-The controller and model are now wired together, so it's time to turn to
-routing.
+上面我们同时更新了控制器和模型，接下来我们需要修改路由。
 
-## Adding the edit route
+## 添加用于编辑的路由
 
-The edit route is identical to the `blog/detail` route we previously defined,
-with two exceptions:
+用于编辑的路由和之前定义的 `blog` 路由类似，但是有一下两个不同的地方：
 
-- it will have a path prefix, `/edit`
-- it will route to our `WriteController`
+- 需要拥有一个 `edit` 前缀
+- 并路由到 `WriteController`
 
-Update the 'blog' `child_routes` to add the new route:
+在'blog' 的 `child_routes` 中添加如下所示的新路由：
 
 ```php
 // In module/Blog/config/module.config.php:
@@ -223,15 +208,12 @@ return [
 ];
 ```
 
+## 创建编辑模板
 ## Creating the edit template
 
-Rendering the form remains essentially the same between the `add` and `edit`
-templates; the only difference between them is the form action. As such, we will
-create a new *partial* script for the form, update the `add` template to use it,
-and create a new `edit` template.
-
-Create a new file, `module/Blog/view/blog/write/form.phtml`, with the following
-contents:
+`add` 和 `edit` 模板实际的渲染结果本质上是一样的；二者唯一不同就在于表单的action属性不一样。
+因此，我们将为表单创建一个新的*partial*脚本，更新`add`视图并加入当前脚本，然后我们再创建一个`edit`视图模板。
+创建一个内容如下所示的新文件`module/Blog/view/blog/write/form.phtml`:
 
 ```php
 <?php
@@ -275,8 +257,7 @@ echo $this->formHidden($fieldset->get('id'));
 echo $this->form()->closeTag();
 ```
 
-Now, update the `add` template, `module/Blog/view/write/add.phtml` to read as
-follows:
+现在我们参照如下的内容更新`add`视图模板，`module/Bolg/view/write/add.phtml`:
 
 ```php
 <h1>Add a blog post</h1>
@@ -290,11 +271,9 @@ echo $this->partial('blog/write/form', [
 ]);
 ```
 
-The above retrieves the form, sets the form action, provides a
-context-appropriate label for the submit button, and renders it with our new
-partial view script.
+我们对以上获取到的表单设置了action属性值，且为提交按钮填充了一个满足上下文条件的文本，并使用我们上面编写的partial视图脚本进行了渲染。
 
-Next in line is the creation of the new template, `blog/write/edit`:
+接下来我们来创建一个新的视图脚本，`blog/write/edit`：
 
 ```php
 <h1>Edit blog post</h1>
@@ -308,29 +287,23 @@ echo $this->partial('blog/write/form', [
 ]);
 ```
 
-The three differences between the `add` and `edit` templates are:
+`add` 和 `edit` 模板有如下三点不同：
 
-- The heading at the top of the page.
-- The URI used for the form action.
-- The label used for the submit button.
 
-Because the URI requires the identifier, we need to ensure the identifier is
-passed. The way we've done this in the controllers is to pass the identifier as
-a parameter: `$this->url('blog/edit/', ['id' => $id])`. This would require that
-we pass the original `Post` instance or the identifier we pull from it to the
-view, however. zend-router allows another option, however: you can tell it to
-re-use currently matched parameters.  This is done by setting the last parameter
-of the view-helper to `true`: `$this->url('blog/edit', [], true)`.
+- 页面顶部的标题不一致。
+- action属性传入的链接不一致。
+- 提交按钮的文本不一致。
 
-If you try and update the post, you will receive the following error:   
+因为URI需要传入一个ID, 为了确保这个id的合法性，我们在控制器中将id作为一个参数传入：`$this->url('blog/edit/', ['id' => $id])`。
+然而zend-router同时也允许'增加一些别的参数，但是我们可以通过将view-helper的最后一个参数设置为true的方式来告知其为最终的结果。
+
+如果你此时刷新页面，你将得到如下的错误信息：
 ```
 Call to member function getId() on null
 ```
-That is because we have not yet implemented the update functionality in
-our command class which will return a Post object on success. Let's do that now.
+那是因为我们还没有在类中实现更新函数来返回一个Post对象。接下来我们开始操作。
 
-Edit the file `module/Blog/src/Model/ZendDbSqlCommand.php`, and update the
-`updatePost()` method to read as follows:
+编辑文件`module/Blog/src/Model/ZendDbSqlCommand.php`，按照如下方式更新`updatePost`方法：
 
 ```php
 public function updatePost(Post $post)
@@ -360,23 +333,16 @@ public function updatePost(Post $post)
 }
 ```
 
-This looks very similar to the `insertPost()` implementation we did earlier. The
-primary difference is the usage of the `Update` class; instead of calling a
-`values()` method on it, we call:
+他看起来和我们之前实现的`insertPost`类似。主要的不同是我们使用了`Update`类；不再使用 `values()` 方法，转而使用：
 
-- `set()`, to provide the values we are updating.
-- `where()`, to provide criteria to determine which records (record singular, in
-  our case) are updated.
+- `set()`，传入需要更新的值。
+- `where()`, 确定需要更新那条记录（当前需要获取单条记录）.
 
-Additionally, we test for the presence of an identifier before performing the
-operation, and, because we already have one, and the `Post` submitted to us
-contains all the edits we submitted to the database, we return it verbatim on
-success.
+此外我们还会在执行操作之前测试id是否存在，因为实际已经存在了，所以当我们将`Post` 的修改提交到数据库后其也讲如实的返回所有的数据。
 
-## Implementing the delete functionality
+## 实现删除功能
 
-Last but not least, it's time to delete some data. We start this process by
-implementing the `deletePost()` method in our `ZendDbSqlCommand` class:
+最后但并非不重要的，是需要删除一些数据。首先我们在`ZendDbSqlCommand` 类中实现一个 `deletePost` 方法：
 
 ```php
 // In module/Blog/src/Model/ZendDbSqlCommand.php:
@@ -402,12 +368,10 @@ public function deletePost(Post $post)
 }
 ```
 
-The above uses `Zend\Db\Sql\Delete` to create the SQL necessary to delete the
-post with the given identifier, which we then execute.
+在上面的方法中，我们使用`Zend\Db\Sql\Delete` 来创建用于删除指定id的SQL，然后执行。
 
-Next, let's create a new controller, `Blog\Controller\DeleteController`, in a
-new file `module/Blog/src/Controller/DeleteController.php`, with the following
-contents:
+接下来，我们参照如下内容在新文件`module/Blog/src/Controller/DeleteController.php`
+中创建一个新的控制器 `Blog\Controller\DeleteController`:
 
 ```php
 <?php
@@ -474,19 +438,15 @@ class DeleteController extends AbstractActionController
 }
 ```
 
-Like the `WriteController`, it composes both our `PostRepositoryInterface` and
-`PostCommandInterface`. The former is used to ensure we are referencing a valid
-post instance, and the latter to perform the actual deletion.
+同  `WriterController`,，其同样需要引入 `PostRepositoryInterface` 和 `PostCommandInterface`。
+前者用于确保我们能引用有效的post实例，后者确保我们能执行删除操作。
 
-When a user requests the page via the `GET` method, we will display a page
-containing details of the post, and a confirmation form. When submitted, we'll
-check to make sure they confirmed the deletion before issuing our delete
-command. If any conditions fail, or on a successful deletion, we redirect to our
-blog listing page.
 
-Like the other controllers, we now need a factory. Create the file
-`module/Blog/src/Factory/DeleteControllerFactory.php` with the following
-contents:
+当用户使用 `GET` 方法请求页面时，我们将展示一个包含当前post内容的页面，并提供一个确认表单。
+提交后，我们将会检查他们已经确认并允许了当前删除操作。如果执行失败或者执行成功，我们都将跳转到文章列表页。
+
+和别的控制器一样，我们也需要实现一个工厂方法。
+创建文件 `module/Blog/src/Factory/DeleteControllerFactory` 并填充上如下内容：
 
 ```php
 <?php
@@ -516,11 +476,9 @@ class DeleteControllerFactory implements FactoryInterface
 }
 ```
 
-We'll now wire this into the application, mapping the controller to its factory,
-and providing a new route. Open the file `module/Blog/config/module.config.php`
-and make the following edits.
+我们需要确保告知应用工厂和控制器的映射关系，并且提供一个新的路由。打开文件 `module/Blog/config/module.config.php` 按照如下步奏编辑。
 
-First, map the controller to its factory:
+首先，建立控制器和工厂的映射：
 
 ```php
 'controllers' => [
@@ -533,7 +491,7 @@ First, map the controller to its factory:
 ],
 ```
 
-Now add another child route to our "blog" route:
+然后在"blog"路由中添加子路由：
 
 ```php
 'router' => [
@@ -562,9 +520,7 @@ Now add another child route to our "blog" route:
     ],
 ],
 ```
-
-Finally, we'll create a new view script,
-`module/Blog/view/blog/delete/delete.phtml`, with the following contents:
+ 最后，创建一个新的视图模板`module/Blog/view/blog/delete/delete.phtml`，内容如下：
 
 ```php
 <h1>Delete post</h1>
@@ -582,33 +538,24 @@ Finally, we'll create a new view script,
 </form>
 ```
 
-This time around, we're not using zend-form; as it consists of just a hidden
-element and cancel/confirm buttons, there's no need to provide an OOP model for it.
+这次，我们并没有使用zend-form; 因为他只需要提供一个隐藏的元素和取消/确认按钮，并不需要为其提供面向对象的模型。
 
-From here, you can now visit one of the existing blog posts, e.g.,
-`http://localhost:8080/blog/delete/1` to see the form. If you choose `Cancel`,
-you should be taken back to the list; if you choose `Delete`, it should delete
-the post and then take you back to the list, and you should see the post is no
-longer present.
+现在，我们可以访问已存在的博客内容，例如`http://localhost:8080/blog/delete/1` 来查看删除表单。如果你点击`Cancel`将会返回列表页；如果你选择 `Delete` 按钮，当前文章将会被删除页面也将返回到列表页，同时你将会看见之前的文章也将不存在了。
 
-## Making the list more useful
+## 让列表页变得更加实用
 
-Our blog post list currently lists everything about all of our blog posts;
-additionally, it doesn't link to them, which means we have to manually update
-the URL in our browser in order to test functionality. Let's update the list
-view to be more useful; we'll:
+当前我们的文章列表页展示了包括文章内容在内的所有记录；同时也没有导航链接，
+这就意味着我们每次测试方法的时候都要手动去更新浏览器地址栏的内容。接下来我们将其更新到更实用的列表：
 
-- List just the title of each blog post;
-- linking the title to the post display;
-- and providing links for editing and deleting the post.
-- Add a button to allow users to add a new post.
+- 仅仅展示文章的标题；
+- 在文章标题上增加展示文章内容的链接；
+- 提供编辑和删除文章的链接；
+- 添加新增文章的按钮。
 
-In a real-world application, we'd probably use some sort of access controls to
-determine if the edit and delete links will be displayed; we'll leave that for
-another tutorial, however.
 
-Open your `module/Blog/view/blog/list/index.phtml` file, and update it to read
-as follows:
+在实际应用中，我们可能需要通过某种权限控制方式来确定是否展示编辑以及删除链接；我们将会有别的教程来专门探讨这个问题。
+
+打开文件 `module/Blog/view/blog/list/index.phtml`，并按照如下内容更新:
 
 ```php
 <h1>Blog Posts</h1>
@@ -635,24 +582,16 @@ as follows:
 </div>
 ```
 
-At this point, we have a far more functional blog, as we can move around between
-pages using links and buttons.
+至此，我们拥有了一个可以使用链接和按钮在不同页面之间转换的功能强大的博客系统了。
 
+## 总结
 ## Summary
 
-In this chapter we've learned how data binding within the zend-form component
-works, and used it to provide functionality for our update routine. We also
-learned how this allows us to de-couple our controllers from the details of how
-a form is structured, helping us keep implementation details out of our
-controller.
+在当前章节中，我们学习了如何使用 zend-form 组件的数据绑定功能，并使用其实现了更新功能。
+同时也学习了如何将控制器和表单合理的解耦，帮助我们将控制器细枝末节的操作中脱离出来。
 
-We also demonstrated the use of view partials, which allow us to split out
-duplication in our views and re-use them. In particular, we did this with our
-form, to prevent needlessly duplicating the form markup.
+我们也尝试了去使用了视图结构化分离，分离出重复的视图并将其重用。尤其是防止出现一些重复的标识。
 
-Finally, we looked at two more aspects of the `Zend\Db\Sql` subcomponent, and
-learned how to perform `Update` and `Delete` operations.
+最后，我们使用了 `Zend\Db\Sql` 的两个子组件，学习了如何使用 `Update` 和 `Delete` 的功能。
 
-In the next chapter we'll summarize everything we've done. We'll talk about the
-design patterns we've used, and we'll cover several questions that likely arose
-during the course of this tutorial.
+在接下来的章节中，我们将对之前的所有操作进行总结。我们将讨论之前使用过的设计模式，并对在本章节中可能出现的几个问题进行讨论。
