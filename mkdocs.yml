@@ -1,7 +1,7 @@
 docs_dir: doc/book
 site_dir: doc/html
-pages:
-    - index.md
+nav:
+    - 首页: index.md
     - "MVC 教程":
       - "Zend Framework 入门":
           - 概述: getting-started/overview.md
@@ -33,7 +33,14 @@ pages:
             - Overview: migration/to-v3/overview.md
             - Components: migration/to-v3/components.md
             - Applications: migration/to-v3/application.md
-site_name: 快速入门
+site_name: tutorials
 site_description: "Zend Framework Tutorials"
-repo_url: 'https://github.com/zendframework/tutorials'
+repo_url: 'https://gitee.com/MushRoom/zf-tutorials'
 copyright: 'Copyright (c) 2016 <a href="http://www.zend.com/">Zend Technologies USA Inc.</a>'
+site_url: 'https://zendframeowrk.laminas.org.cn/tutorials'
+theme:
+  name: null
+  custom_dir: 'zf-mkdoc-theme/theme'
+extra:
+  scripts: scripts-8d7ae56abf.js
+  styles: styles-5cfabd53ee.css
